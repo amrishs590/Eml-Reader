@@ -11,8 +11,11 @@ It focuses on providing a **secure**, **efficient**, and **modern** solution for
   - Sender, Receiver, Subject, and Date  
   - Message body (both plain text and HTML)  
   - Attachments (if any)
+    
 - 🔍 Clean and intuitive interface to view email details
+  
 - 🧱 Follows **MVC architecture** for clean separation of logic
+  
 - ⚙️ Runs on **Apache Tomcat** server
 
 ---
