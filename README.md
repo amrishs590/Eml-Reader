@@ -26,7 +26,6 @@ It focuses on providing a **secure**, **efficient**, and **modern** solution for
 |-------------|-----------------|
 | **Client (Frontend)** | JSP, HTML, CSS, JavaScript |
 | **Backend (Server-side)** | Java Servlets |
-| **Database** | MySQL |
 | **Server** | Apache Tomcat |
 | **Architecture Pattern** | MVC (Model-View-Controller) |
 
