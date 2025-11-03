@@ -79,12 +79,25 @@
 <body>
     <div class="container">
         <h2>📧 EML File Reader</h2>
-        <form action="ReadEMLServlet" method="post">
+        <form action="ReadEMLServlet" method="post" onsubmit="return sanitizeInput()">
             <label>Enter full path of .eml file:</label>
-            <input type="text" name="emlPath" placeholder="/path/to/email.eml" required />
+            <input type="text" id="emlPath" name="emlPath" placeholder="/path/to/email.eml" 
+                   required pattern="^[a-zA-Z0-9_./:\\\\-]+$"
+                   title="Only letters, numbers, slashes, dots, and dashes allowed.">
             <br><br>
             <input type="submit" value="Read EML">
-        </form>
+        </form>																	
     </div>
+
+    <script>
+        function sanitizeInput() {
+            const input = document.getElementById("emlPath").value.trim();
+            if (/[<>]/.test(input)) {
+                alert("Invalid characters in file path. '<' and '>' are not allowed.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>
