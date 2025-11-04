@@ -23,6 +23,15 @@ public class ReadEMLServlet extends HttpServlet {
 
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter out = resp.getWriter();
+        String sessionToken = (String) req.getSession().getAttribute("csrfToken");
+        String formToken = req.getParameter("csrfToken");
+
+        if (sessionToken == null || formToken == null || !sessionToken.equals(formToken)) {
+            out.println("<div class='error'><h2>Invalid CSRF Token. Request blocked for security reasons.</h2></div>");
+            return;
+        }
+        req.getSession().removeAttribute("csrfToken");
+
         String emlPath = req.getParameter("emlPath");
 
         if (emlPath == null || !emlPath.matches("^[a-zA-Z0-9_./: \\\\-]+$")) {
