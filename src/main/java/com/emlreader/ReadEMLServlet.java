@@ -195,7 +195,7 @@ public class ReadEMLServlet extends HttpServlet {
 			out.println(
 					"<div class='error'><h3>Error Occurred:</h3><pre>" + escapeHtml(e.getMessage()) + "</pre></div>");
 		}
-
+		out.println("<a href='index.jsp' class='back-btn'>⬅ Back to Upload Page</a>");
 		out.println("</div></body></html>");
 	}
 

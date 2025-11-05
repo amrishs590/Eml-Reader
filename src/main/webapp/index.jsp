@@ -97,7 +97,7 @@ input[type="submit"]:hover {
             <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
             <input type="submit" value="Read EML">
         </form>
-        <div class="footer">🔒 Secure EML Reader v1.0</div>
+        <div class="footer">🔒 Secure EML Reader</div>
     </div>
 
 <script>
