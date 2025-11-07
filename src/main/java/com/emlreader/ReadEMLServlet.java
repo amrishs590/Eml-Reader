@@ -186,17 +186,19 @@ public class ReadEMLServlet extends HttpServlet {
         if (body == null || body.isEmpty()) return;
 
         String[] keys = {
-        		"To","From","Return-Path",
-                "Delivered-To", "Received", "DKIM-Signature",
-                "Date", "Reply-To", "MIME-Version",
-                "ARC-Seal", "ARC-Authentication-Results"
+            "To", "From", "Return-Path",
+            "Delivered-To", "Received", "DKIM-Signature",
+            "Date", "Reply-To", "MIME-Version",
+            "ARC-Seal", "ARC-Authentication-Results"
         };
 
         String[] lines = body.split("\\r?\\n");
+        Set<String> domainSet = new LinkedHashSet<>(); 
         for (String key : keys) {
             boolean found = false;
+
             for (String line : lines) {
-                if (line.toLowerCase().startsWith(key.toLowerCase() + ":")) {
+                if (line.matches("(?i)^\\s*" + key + ":.*")) {
                     String value = line.substring(line.indexOf(':') + 1).trim();
                     out.println("<p><b>" + key + ":</b> " + escapeHtml(value) + "</p>");
                     System.out.println(key + ": " + value);
@@ -204,12 +206,61 @@ public class ReadEMLServlet extends HttpServlet {
                     break;
                 }
             }
+
             if (!found) {
                 out.println("<p><b>" + key + ":</b> Not Found</p>");
                 System.out.println(key + ": Not Found");
             }
         }
+        
+        for (String line : lines) {
+            extractDomainsFromLine(line, domainSet);
+        }
+
+        System.out.println();
+        System.out.println("===== 🔍 Extracted Domains from Body =====");
+        System.out.println();
+
+        if (!domainSet.isEmpty()) {
+            out.println("<h3>🌐 Extracted Domains</h3>");
+            out.println("<ul>");
+            for (String domain : domainSet) {
+                out.println("<li>" + escapeHtml(domain) + "</li>");
+                System.out.println("Domain: " + domain);
+            }
+            out.println("</ul>");
+        } else {
+            out.println("<p><i>No domains found.</i></p>");
+            System.out.println("Domains: None found");
+        }
+        System.out.println();
     }
+
+    
+    private void extractDomainsFromLine(String line, Set<String> domainSet) {
+        if (line == null || line.isEmpty()) return;
+        
+        java.util.regex.Pattern emailPat = java.util.regex.Pattern.compile(
+            "[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})"
+        );
+        java.util.regex.Matcher m = emailPat.matcher(line);
+        while (m.find()) {
+            domainSet.add(m.group(1).toLowerCase());
+        }
+        java.util.regex.Pattern urlPat = java.util.regex.Pattern.compile(
+            "https?://([^/\\s:]+)",
+            java.util.regex.Pattern.CASE_INSENSITIVE
+        );
+        m = urlPat.matcher(line);
+        while (m.find()) {
+            String host = m.group(1).toLowerCase();
+            int colon = host.indexOf(':');
+            if (colon > -1) host = host.substring(0, colon);
+            if (host.startsWith("www.")) host = host.substring(4);
+            domainSet.add(host);
+        }
+
+   }
 
     private String getTextFromMessage(Part part) throws Exception {
         if (part.isMimeType("text/plain") || part.isMimeType("text/html"))
@@ -282,4 +333,4 @@ public class ReadEMLServlet extends HttpServlet {
 //This method checks what kind of content a Part holds
 //if (part.isMimeType("text/plain")) → plain text email
 //if (part.isMimeType("text/html")) → HTML email
-//if (part.isMimeType("multipart/*")) → email with multiple parts (text + attachments)
+//if (part.isMimeType("multipart/*")) → email with multiple parts (text + attachments)	
