@@ -61,7 +61,8 @@ public class ReadEMLServlet extends HttpServlet {
 				               }
 				               h3 {
 				                   color: #303f9f;
-				                   margin-top: 25px;
+				                   margin-top: 20px;
+				                   margin-bottom: 8px;
 				               }
 				               .meta {
 				                   background: #f9f9fc;
@@ -71,20 +72,29 @@ public class ReadEMLServlet extends HttpServlet {
 				                   margin-bottom: 20px;
 				               }
 				               .meta p {
-				                   margin: 8px 0;
+				                   margin: 6px 0;
 				                   font-size: 15px;
 				                   color: #333;
 				               }
 				               .content {
 				                   background: #fff;
-				                   padding: 20px;
+				                   padding: 18px;
 				                   border-radius: 8px;
 				                   border: 1px solid #ddd;
-				                   line-height: 1.6;
+				                   line-height: 1.5;
 				                   font-size: 15px;
 				                   color: #333;
 				                   white-space: pre-wrap;
 				                   word-wrap: break-word;
+				                   margin-bottom: 15px;
+				               }
+				               .content.compact p {
+				                   margin: 4px 0;
+				                   line-height: 1.4;
+				               }
+				               .content.compact ul {
+				                   margin: 4px 0;
+				                   padding-left: 18px;
 				               }
 				               .error {
 				                   background: #ffebee;
@@ -108,42 +118,36 @@ public class ReadEMLServlet extends HttpServlet {
 				                   background: #1565c0;
 				               }
 				               .content table {
-							    width: 100%;
-							    border-collapse: collapse;
-							    margin-top: 10px;
-							    border-radius: 8px;
-							    border: 1px solid #ccc;
-							    table-layout: fixed; /* ensures consistent column widths */
-							    word-wrap: break-word;
-							}
-							.content th, .content td {
-							    text-align: left;
-							    padding: 10px 15px;
-							    border-bottom: 1px solid #e0e0e0;
-							    vertical-align: top;
-							}
-
-							.content th {
-							    background-color: #e3f2fd;
-							    color: #1a237e;
-							    font-weight: 600;
-							}
-
-							.content tr:nth-child(even) {
-							    background-color: #f9f9fc;
-							}
-
-							.content tr:hover {
-							    background-color: #f1f1f1;
-							}
-
-							.content td {
-							    word-break: break-all;
-							    white-space: normal; /* allows line breaks */
-							    max-width: 400px;
-							}
-
-
+				                   width: 100%;
+				                   border-collapse: collapse;
+				                   margin-top: 10px;
+				                   border-radius: 8px;
+				                   border: 1px solid #ccc;
+				                   table-layout: fixed;
+				                   word-wrap: break-word;
+				               }
+				               .content th, .content td {
+				                   text-align: left;
+				                   padding: 10px 15px;
+				                   border-bottom: 1px solid #e0e0e0;
+				                   vertical-align: top;
+				               }
+				               .content th {
+				                   background-color: #e3f2fd;
+				                   color: #1a237e;
+				                   font-weight: 600;
+				               }
+				               .content tr:nth-child(even) {
+				                   background-color: #f9f9fc;
+				               }
+				               .content tr:hover {
+				                   background-color: #f1f1f1;
+				               }
+				               .content td {
+				                   word-break: break-all;
+				                   white-space: normal;
+				                   max-width: 400px;
+				               }
 				            </style>
 				        </head>
 				        <body>
@@ -192,7 +196,7 @@ public class ReadEMLServlet extends HttpServlet {
 				out.println("<p><i>No readable text content found.</i></p>");
 				System.out.println("Body: No readable text content found.");
 			}
-			out.println("<div class='content'><h3>🔍 Extracted Info from Body</h3>");
+			out.println("<div class='content compact'><h3>🔍 Extracted Info from Body</h3>");
 			System.out.println("===== 🔍 Extracted Info from Body =====");
 			System.out.println();
 			extractInfoFromBody(body, out);
@@ -236,6 +240,7 @@ public class ReadEMLServlet extends HttpServlet {
 		System.out.println();
 		System.out.println("===== 🔍 Extracted Domains from Body =====");
 		System.out.println();
+		out.println("<div class='content compact'>");
 		if (!domainSet.isEmpty()) {
 			out.println("<h3>🌐 Extracted Domains</h3>");
 			out.println("<ul>");
@@ -248,6 +253,7 @@ public class ReadEMLServlet extends HttpServlet {
 			out.println("<p><i>No domains found.</i></p>");
 			System.out.println("Domains: None found");
 		}
+		out.println("</div>");
 		System.out.println();
 	}
 
@@ -289,13 +295,13 @@ public class ReadEMLServlet extends HttpServlet {
 				otherList.add(kv);
 			}
 		}
+		//console
 		System.out.println("===== 🧾 All Key:Value Pairs from Body =====");
 		int index = 1;
-		for (String[] kv : keyValues) {
-			if ("Received".equalsIgnoreCase(kv[0]))
-				continue;
+		for (String[] kv : otherList) {
 			System.out.println(index++ + "\t" + kv[0] + "\t" + kv[1]);
 		}
+		//web - Table 1 
 		out.println("<div class='content'><h3>🧾 Key:Value Pairs from Body</h3>");
 		if (!importantList.isEmpty()) {
 			out.println("<h4>⭐ Important Headers</h4>");
@@ -308,7 +314,7 @@ public class ReadEMLServlet extends HttpServlet {
 			}
 			out.println("</table>");
 		}
-
+        //web - Table 2
 		if (!otherList.isEmpty()) {
 			out.println("<h4 style='margin-top:20px;'>📄 Other Headers</h4>");
 			out.println("<table class='data-table'>");
@@ -327,7 +333,7 @@ public class ReadEMLServlet extends HttpServlet {
 
 		out.println("</div>");
 	}
-
+	
 	private void extractDomainsFromLine(String line, Set<String> domainSet) {
 		if (line == null || line.isEmpty())
 			return;
@@ -393,8 +399,8 @@ public class ReadEMLServlet extends HttpServlet {
 		html = html.replaceAll("(?i)javascript:", "");
 		return html;
 	}
-
 }
+
 
 //Part
 //javamail interface - represent piece of email message
