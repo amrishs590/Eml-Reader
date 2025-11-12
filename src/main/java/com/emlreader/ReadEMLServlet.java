@@ -5,9 +5,12 @@ import jakarta.mail.Part;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
+
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 
 public class ReadEMLServlet extends HttpServlet {
 
@@ -27,7 +30,7 @@ public class ReadEMLServlet extends HttpServlet {
 			return;
 		}
 		File emlFile = new File(emlPath);
-		out.println("""
+		out.println("""						
 				       <html>
 				       <head>
 				           <meta charset='UTF-8'>
@@ -256,7 +259,7 @@ public class ReadEMLServlet extends HttpServlet {
 		out.println("</div>");
 		System.out.println();
 	}
-
+	
 	private void extractAllKeyValuePairsFromBody(String body, PrintWriter out) {
 		if (body == null || body.isEmpty())
 			return;
@@ -282,8 +285,7 @@ public class ReadEMLServlet extends HttpServlet {
 		if (currentKey != null) {
 			keyValues.add(new String[] { currentKey.trim(), currentValue.toString().trim() });
 		}
-		Set<String> importantKeys = new LinkedHashSet<>(
-				Arrays.asList("Subject", "Date", "From", "To", "Message-ID", "Creation-Time"));
+		Set<String> importantKeys = new LinkedHashSet<>(Arrays.asList("Subject", "Date", "From", "To", "Message-ID", "Creation-Time"));
 		List<String[]> importantList = new ArrayList<>();
 		List<String[]> otherList = new ArrayList<>();
 		for (String[] kv : keyValues) {
@@ -304,7 +306,7 @@ public class ReadEMLServlet extends HttpServlet {
 		//web - Table 1 
 		out.println("<div class='content'><h3>🧾 Key:Value Pairs from Body</h3>");
 		if (!importantList.isEmpty()) {
-			out.println("<h4>⭐ Important Headers</h4>");
+			out.println("<h4> Important Headers</h4>");
 			out.println("<table class='data-table'>");
 			out.println("<tr style='background:#e3f2fd;'><th>#</th><th>Key</th><th>Value</th></tr>");
 			index = 1;
@@ -330,7 +332,6 @@ public class ReadEMLServlet extends HttpServlet {
 		if (importantList.isEmpty() && otherList.isEmpty()) {
 			out.println("<p><i>No key:value pairs found in the body.</i></p>");
 		}
-
 		out.println("</div>");
 	}
 	
@@ -401,11 +402,11 @@ public class ReadEMLServlet extends HttpServlet {
 	}
 }
 
-
 //Part
 //javamail interface - represent piece of email message
 //Single Part - simple text mail
 //Multi Part - Html + attachment + images
+
 
 //Bodypart
 //It is one section of multipart message
@@ -415,7 +416,8 @@ public class ReadEMLServlet extends HttpServlet {
 //	image png
 //BodyPart is used only inside a multipart email
 
-//Multipart
+
+//Multipart 
 //A Multipart object is a container that holds multiple BodyPart objects
 //Think of Multipart as a list of parts inside one email.
 
