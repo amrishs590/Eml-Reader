@@ -205,7 +205,7 @@ public class ReadEMLServlet extends HttpServlet {
         return false;
     }
 
-    private String escapeHtml(String text) {
+    public static String escapeHtml(String text) {
         return text == null ? "" : text
                 .replace("&", "&amp;").replace("<", "&lt;")
                 .replace(">", "&gt;").replace("\"", "&quot;")
