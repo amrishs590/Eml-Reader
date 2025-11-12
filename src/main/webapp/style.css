@@ -1,0 +1,116 @@
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #e3f2fd, #e8eaf6);
+    margin: 0;
+    padding: 40px;
+}
+.container {
+    max-width: 950px;
+    margin: auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    padding: 40px 50px;
+    animation: fadeIn 0.6s ease-in;
+}
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+h1 {
+    color: #1a237e;
+    font-size: 28px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+h3 {
+    color: #303f9f;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+.meta {
+    background: #f9f9fc;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+}
+.meta p {
+    margin: 6px 0;
+    font-size: 15px;
+    color: #333;
+}
+.content {
+    background: #fff;
+    padding: 18px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    line-height: 1.5;
+    font-size: 15px;
+    color: #333;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin-bottom: 15px;
+}
+.content.compact p {
+    margin: 4px 0;
+    line-height: 1.4;
+}
+.content.compact ul {
+    margin: 4px 0;
+    padding-left: 18px;
+}
+.error {
+    background: #ffebee;
+    color: #c62828;
+    padding: 18px;
+    border-radius: 10px;
+    border: 1px solid #ffcdd2;
+    margin-bottom: 20px;
+}
+.back-btn {
+    display: inline-block;
+    margin-top: 30px;
+    background: #1e88e5;
+    color: white;
+    text-decoration: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+.back-btn:hover {
+    background: #1565c0;
+}
+.content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+.content th, .content td {
+    text-align: left;
+    padding: 10px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    vertical-align: top;
+}
+.content th {
+    background-color: #e3f2fd;
+    color: #1a237e;
+    font-weight: 600;
+}
+.content tr:nth-child(even) {
+    background-color: #f9f9fc;
+}
+.content tr:hover {
+    background-color: #f1f1f1;
+}
+.content td {
+    word-break: break-all;
+    white-space: normal;
+    max-width: 400px;
+}
